@@ -15,4 +15,7 @@ public class Animal {
     public void talk() {
         System.out.println("bark or meow, that is the question");
     }
+    public void setName(String name) {
+        this.name = name;
+    }
 }

@@ -10,7 +10,10 @@
     (println (.toString obj))
     (println (.getName obj))
     (.talk obj)
+    (println (str "Nome antes: " (.getName obj)))
+    (.setName obj "YOLO")
     ;;*compile-path*
+    (println (str "Nome depois: " (.getName obj)))
     ))
 
 (defn -main
