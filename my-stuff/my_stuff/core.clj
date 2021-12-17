@@ -85,6 +85,8 @@
     (/ (reduce + notas-estrangeiras)
        (count notas-estrangeiras))))
 
+;; does not work
+;; sort by does not receive 2-arg function
 (defn nome-dois-alunos-melhor-nota [alunos]
   (sort-by (fn [a1 a2] (- (.getNota a1) (.getNota a2)))
            alunos))
