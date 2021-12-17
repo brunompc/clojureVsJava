@@ -6,7 +6,7 @@
            )
   )
 
-;(import '[src.java.pastrami.Animal])
+(import '[src.java.pastrami.Animal])
 ;(import '[Animal])
 
 (defn brown-sugar []
@@ -19,6 +19,7 @@
     (.setName obj "YOLO")
     ;;*compile-path*
     (println (str "Nome depois: " (.getName obj)))
+    (println (str "" (.getRandomNumber obj)))
     ))
 
 (defn show-window []
@@ -59,12 +60,82 @@
     (.pack f)
     ))
 
+(defn aprovado [a]
+  (.estaAprovado a))
+
+(defn eTuga [a]
+  (.equals (.getNacionalidade a) "Portuguesa"))
+
+(defn conta-aprovados [alunos]
+  (count (filter (fn [a] (.estaAprovado a)) alunos)))
+
+(defn conta-aprovados-portugueses [alunos]
+  (count (filter (fn [a] (.equals (.getNacionalidade a) "Portuguesa")) (filter aprovado alunos))))
+
+(defn get-nomes-aprovados [alunos]
+  (map (fn [a] (.getNome a))
+       (filter (fn [a] (.estaAprovado a)) alunos)))
+
+(defn quantas-notas-diferentes [alunos]
+  (count (distinct (map (fn [a] (.getNota a)) alunos))))
+
+(defn media-notas-estrangeiras [alunos]
+  (let [notas-estrangeiras (map (fn [a] (.getNota a))
+                                (filter (fn [a] (not (.equals (.getNacionalidade a) "Portuguesa"))) alunos))]
+    (/ (reduce + notas-estrangeiras)
+       (count notas-estrangeiras))))
+
+(defn nome-dois-alunos-melhor-nota [alunos]
+  (sort-by (fn [a1 a2] (- (.getNota a1) (.getNota a2)))
+           alunos))
+
+(defn comparar-alunos [a1 a2]
+  (compare (.getNota a1)
+           (.getNota a2)))
+
+;; hack-of-death #1
+(defn nome-dois-alunos-melhor-nota [alunos]
+  (let [alunos-ordenados (reverse (sort comparar-alunos alunos))]
+    [(.getNome (first alunos-ordenados))
+     (.getNome (first (rest alunos-ordenados)))]))
+
+;; hack-of-death #2
+(defn dados-alunos-nota-mais-alta-crescente [alunos]
+  (let* [alunos-ordenados-desc (reverse (sort comparar-alunos alunos))
+         alunos [(first alunos-ordenados-desc),
+                 (second alunos-ordenados-desc),
+                 (nth alunos-ordenados-desc 2)]]
+    (map (fn [a] (str (.getNome a)
+                      ":"
+                      (.getNacionalidade a)
+                      ":"
+                      (.getNota a)))
+         (reverse alunos))))
+
+(defn ficha-funcional-lp2 []
+  (let [alunos [(new src.java.pastrami.Aluno "Goiaba" 20 "Portuguesa"),
+                (new src.java.pastrami.Aluno "Kitty" 19 "Portuguesa"),
+                (new src.java.pastrami.Aluno "Corto" 13 "Grega"),
+                (new src.java.pastrami.Aluno "Ruby" 16 "Portuguesa"),
+                (new src.java.pastrami.Aluno "Vicky Cristina" 9 "Espanhola"),
+                (new src.java.pastrami.Aluno "Firfiriki" 13 "Gr")]]
+    (println (str "Aprovados: " (conta-aprovados alunos)))
+    (println (str "Aprovados Portugueses: " (conta-aprovados-portugueses alunos)))
+    (println (str "Nomes Aprovados: " (print-str (get-nomes-aprovados alunos))))
+    (println (str "Quantas notas diferentes: " (quantas-notas-diferentes alunos)))
+    (println (str "Medias notas estrangeiras: " (media-notas-estrangeiras alunos)))
+    (println (str "Medias notas estrangeiras: " (float (media-notas-estrangeiras alunos))))
+    (println (str "Top 2 alunos (desc): ") (print-str (nome-dois-alunos-melhor-nota alunos)))
+    (println (str "Top 3 (asc): " (print-str (dados-alunos-nota-mais-alta-crescente alunos))))))
+
 (defn -main
   "I don't do a whole lot ... yet."
   [& args]
   (println "Hello, World!")
   (println (brown-sugar))
-  (print "this is the end")
-  (show-window-2)
+  (println "this is the end")
+  ;;(new src.java.pastrami.Aluno "Yo" 1 "Oy")
+  ;;(show-window-2)
+  (ficha-funcional-lp2)
   )
 
