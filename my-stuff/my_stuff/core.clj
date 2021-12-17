@@ -110,6 +110,10 @@
   (let [alunos-ordenados (reverse (sort comparar-alunos alunos))]
     (map (fn [a] (.getNome a)) (take 2 alunos-ordenados))))
 
+(defn nome-dois-alunos-melhor-nota [alunos]
+  (let [alunos-ordenados (reverse (sort comparar-alunos alunos))]
+    (map #(.getNome %1) (take 2 alunos-ordenados))))
+
 ;; hack-of-death #2
 (defn dados-alunos-nota-mais-alta-crescente [alunos]
   (let* [alunos-ordenados-desc (reverse (sort comparar-alunos alunos))
