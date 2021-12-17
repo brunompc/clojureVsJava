@@ -93,11 +93,22 @@
   (compare (.getNota a1)
            (.getNota a2)))
 
+;; does not work
+;; because of subvec
+(defn nome-dois-alunos-melhor-nota [alunos]
+  (let* [alunos-ordenados (reverse (sort comparar-alunos alunos))
+         dois-melhores (subvec alunos-ordenados 0 2)]
+    (map (fn [a] (.getNome a) dois-melhores))))
+
 ;; hack-of-death #1
 (defn nome-dois-alunos-melhor-nota [alunos]
   (let [alunos-ordenados (reverse (sort comparar-alunos alunos))]
     [(.getNome (first alunos-ordenados))
      (.getNome (first (rest alunos-ordenados)))]))
+
+(defn nome-dois-alunos-melhor-nota [alunos]
+  (let [alunos-ordenados (reverse (sort comparar-alunos alunos))]
+    (map (fn [a] (.getNome a)) (take 2 alunos-ordenados))))
 
 ;; hack-of-death #2
 (defn dados-alunos-nota-mais-alta-crescente [alunos]
@@ -105,6 +116,16 @@
          alunos [(first alunos-ordenados-desc),
                  (second alunos-ordenados-desc),
                  (nth alunos-ordenados-desc 2)]]
+    (map (fn [a] (str (.getNome a)
+                      ":"
+                      (.getNacionalidade a)
+                      ":"
+                      (.getNota a)))
+         (reverse alunos))))
+
+(defn dados-alunos-nota-mais-alta-crescente [alunos]
+  (let* [alunos-ordenados-desc (reverse (sort comparar-alunos alunos))
+         alunos (take 3 alunos-ordenados-desc)]
     (map (fn [a] (str (.getNome a)
                       ":"
                       (.getNacionalidade a)
@@ -137,5 +158,6 @@
   ;;(new src.java.pastrami.Aluno "Yo" 1 "Oy")
   ;;(show-window-2)
   (ficha-funcional-lp2)
+  (println (take 2 [:a :b :c] ))
   )
 
