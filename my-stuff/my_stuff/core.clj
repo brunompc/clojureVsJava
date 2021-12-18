@@ -139,7 +139,7 @@
                       (.getNota a)))
          (reverse alunos))))
 
-(defn ficha-funcional-lp2 []
+(defn ficha-funcional-2-lp2 []
   (let [alunos [(new src.java.pastrami.Aluno "Goiaba" 20 "Portuguesa"),
                 (new src.java.pastrami.Aluno "Kitty" 19 "Portuguesa"),
                 (new src.java.pastrami.Aluno "Corto" 13 "Grega"),
@@ -155,6 +155,36 @@
     (println (str "Top 2 alunos (desc): ") (print-str (nome-dois-alunos-melhor-nota alunos)))
     (println (str "Top 3 (asc): " (print-str (dados-alunos-nota-mais-alta-crescente alunos))))))
 
+(defn get-lambda [nome]
+  (cond
+    (= nome "ePar") (fn [n] (= (mod n 2) 0))
+    (= nome "entre10e20") (fn [n] (and (> n 10) (< n 20)))
+    (= nome "menor5Maior25") (fn [n] (or (< n 5) (> n 25)))
+    :else (fn [n] false)))
+
+(defn transforma-array [numbers fn]
+  (map fn numbers))
+
+(defn pseudo-main []
+  (println (str "ePar" (print-str (transforma-array [5, 15, 25], (get-lambda "ePar")))))
+  (println (print-str (transforma-array [5, 15, 25], (get-lambda "entre10e20"))))
+  (println (print-str (transforma-array [5, 15, 25], (get-lambda "menor5Maior25"))))
+  (println (print-str (transforma-array [5, 15, 25], (get-lambda "seilaEu")))))
+
+(defn ficha-funcional-1-lp2 []
+  (let [fn (get-lambda "ePar")
+        fn2 (get-lambda "entre10e20")
+        fn3 (get-lambda "menor5Maior25")
+        fn4 (get-lambda "seilaEu")]
+    (println (str "ePar" (print-str (map fn (list 1 2 3 4 5)))))
+    (println (str "entre10e20" (print-str (map fn2 (list 10 12 3 4 5)))))
+    (println (str "menor5Maior25" (print-str (map fn3 (list 1 2 3 4 5 26)))))
+    (println (str "seilaEu" (print-str (map fn4 (list 1 2 3 4 5)))))
+    ;;
+    (pseudo-main)
+    ))
+
+
 (defn -main
   "I don't do a whole lot ... yet."
   [& args]
@@ -163,7 +193,10 @@
   (println "this is the end")
   ;;(new src.java.pastrami.Aluno "Yo" 1 "Oy")
   ;;(show-window-2)
-  (ficha-funcional-lp2)
+  (println "Ficha Funcional 1")
+  (ficha-funcional-1-lp2)
+  (println "Ficha Funcional 2")
+  (ficha-funcional-2-lp2)
   (println (take 2 [:a :b :c] ))
   )
 
